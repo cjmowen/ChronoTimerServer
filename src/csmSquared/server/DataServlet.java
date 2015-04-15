@@ -25,11 +25,17 @@ public class DataServlet extends HttpServlet {
 			String html = 
 					"<!DOCTYPE html><html><head><meta charset=\"ISO-8859-1\">" +
 					"<title>Run " + runNumber + " Results</title>" +
+					"<link rel=\"stylesheet\" type=\"text/css\" href=\"style.css\">" +
 					"</head><body>";
 			
 			if(runJSON != null) {
-				html += "<h1>Run " + runNumber + "</h1>" +
-						"<h2>results</h2>" +
+				html += "<header>" + 
+						"<h1>Run " + runNumber + "</h1>" +
+						"<h2>results</h2>" + 
+						"</header>" +
+						"<form action=\"data\" method=\"get\">" +
+						"<input type=\"text\" name=\"runInput\" placeholder=\"Enter a run number\"> <input type=\"submit\" value=\"Go!\">" +
+						"</form>" +
 						"<table>" +
 						"<tr>" +
 						"<th>Racer ID</th>" +
@@ -46,8 +52,7 @@ public class DataServlet extends HttpServlet {
 				}
 			}
 			else {
-				html += "<h1>Sorry!</h1>" + 
-						"<p>We found no data for run " + runNumber + "</p>";
+				html += "<p>Sorry! We found no data for run " + runNumber + "</p>";
 			}
 			
 			html += "</table></body></hmtl>";
