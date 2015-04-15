@@ -1,40 +1,62 @@
 @CHARSET "ISO-8859-1";
 
+body {
+	background-color: #3c443e;
+	font-family: 'Open Sans', sans-serif;
+}
+
 header {
-	background-color: #374a4a;
+	background-color: #313c37;
 	margin: -2em -1em 0em -1em;
 	display: block;
+	border-bottom: 1px solid #4fa64a;
 }
 
 h1 {
 	font-size: 3em;
 	padding: .2em 0em 0em 1em;
-	color: #ffffff;
+	color: #fafafa;
 }
 
 h2 {
 	font-size: 1.25em;
 	margin-top: -2em;
+	margin-bottom: 0em;
 	padding: 0em 0em 0em 5em;
 	color: #88d971;
 }
 
-#run_input {
-	width= 65em;
+.main_container {
+	margin-left: 3em;
+}
+
+p {
+	color: #fafafa;
+}
+
+.button {
+	background-color: #313c37;
+	color: #fafafa;
+	border: 2px solid #83cd69;
+}
+
+tbale, th, td {
+	border: 1px solid #83cd69;
 }
 
 table {
 	width: 100%;
 	float: center;
 	text-align: center;
+	border-collapse: collapse;
 }
 
 th {
-	background-color: #e71e18;
+	background-color: #83cd69;
 	color: #ffffff;
 }
 
-tr {
-	background-color: #374a4a;
-	color: #ffffff;
+td {
+	background-color: #fafafa;
+	color: #2e362e;
 }

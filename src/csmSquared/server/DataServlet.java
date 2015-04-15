@@ -32,10 +32,11 @@ public class DataServlet extends HttpServlet {
 				html += "<header>" + 
 						"<h1>Run " + runNumber + "</h1>" +
 						"<h2>results</h2>" + 
-						"</header>" +
+						"</header><br/>" +
+						"<div class=\"main_container\">" +
 						"<form action=\"data\" method=\"get\">" +
-						"<input type=\"text\" name=\"runInput\" placeholder=\"Enter a run number\"> <input type=\"submit\" value=\"Go!\">" +
-						"</form>" +
+						"<input type=\"text\" name=\"runInput\" placeholder=\"Enter a run number\" required> <input type=\"submit\" value=\"Go!\">" +
+						"</form></div><br/>" +
 						"<table>" +
 						"<tr>" +
 						"<th>Racer ID</th>" +
