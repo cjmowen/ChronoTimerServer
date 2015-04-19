@@ -53,15 +53,15 @@ public class DataServlet extends HttpServlet {
 					   .addInput("data", "get", "runInput", "Enter a run number", "Go!")
 					   .endDiv();
 			}
-//		} catch(NumberFormatException e) {
-//			// If the user enters something that isn't an integer...
-//			builder = new HTMLBuilder("Invalid run number");
-//			builder.addHeader("ChronoTimer 1009")
-//				   .addBreak()
-//				   .startDiv("main_container")
-//				   .addP("Sorry, \"" + input + "\" is not a valid run number. Try again!")
-//				   .addInput("data", "get", "runInput", "Enter a run number", "Go!")
-//				   .endDiv();
+		} catch(NumberFormatException e) {
+			// If the user enters something that isn't an integer...
+			builder = new HTMLBuilder("Invalid run number");
+			builder.addHeader("ChronoTimer 1009")
+				   .addBreak()
+				   .startDiv("main_container")
+				   .addP("Sorry, \"" + input + "\" is not a valid run number. Try again!")
+				   .addInput("data", "get", "runInput", "Enter a run number", "Go!")
+				   .endDiv();
 		}catch (Exception e) {
 			// Something else went wrong (hopefully not)
 			builder = new HTMLBuilder("An Error Occured");
