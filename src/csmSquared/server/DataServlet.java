@@ -33,12 +33,14 @@ public class DataServlet extends HttpServlet {
 					.addInput("data", "get", "runInput", "Enter a run number", "Go!")
 					.endDiv()
 					.addBreak()
-					.startTable("Racer", "Time");
+					.startTable("Place", "Racer", "Time");
 				
 				JSONArray racerArray = runJSON.getJSONArray("racers");
 				for(int i = 0; i < racerArray.length(); ++i) {
 					JSONObject racer = racerArray.getJSONObject(i);
-					builder.addTableRow(racer.getString("id"), racer.getString("time")); 
+					String place = racer.getString("time").equals("DNF") ? "-" : toOrdinal(i + 1);
+					
+					builder.addTableRow(place, racer.getString("id"), racer.getString("time")); 
 				}
 				
 				builder.endTable();
@@ -89,5 +91,20 @@ public class DataServlet extends HttpServlet {
 		} catch (Exception e) {
 			resp.getOutputStream().print(false);
 		}
+	}
+	
+	// This method is from the following thread:
+	// http://stackoverflow.com/questions/6810336/is-there-a-library-or-utility-in-java-to-convert-an-integer-to-its-ordinal
+	private String toOrdinal(int i) {
+	    String[] sufixes = new String[] { "th", "st", "nd", "rd", "th", "th", "th", "th", "th", "th" };
+	    switch (i % 100) {
+	    case 11:
+	    case 12:
+	    case 13:
+	        return i + "th";
+	    default:
+	        return i + sufixes[i % 10];
+
+	    }
 	}
 }
