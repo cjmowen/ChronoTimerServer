@@ -1,5 +1,6 @@
 package csmSquared.server.data;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.google.appengine.api.datastore.DatastoreService;
@@ -10,6 +11,8 @@ import com.google.appengine.api.datastore.Query;
 import com.google.appengine.labs.repackaged.org.json.JSONArray;
 import com.google.appengine.labs.repackaged.org.json.JSONException;
 import com.google.appengine.labs.repackaged.org.json.JSONObject;
+
+import csmSquared.main.Time;
 
 public class Data {
 	private static DatastoreService datastore;
@@ -66,6 +69,9 @@ public class Data {
 			return null;
 		}
 		
+		// Sort the racers by time
+		racers = sortRacersByTime(racers);
+		
 		// Build a JSON array of the racers in the run
 		JSONArray racerArr = new JSONArray();
 		for(Entity racer : racers) {
@@ -86,4 +92,54 @@ public class Data {
 		
 		return runObj;
 	}
+	
+	private ArrayList<Entity> sortRacersByTime(List<Entity> racers) {
+		ArrayList<Entity> sortedRacers = new ArrayList<Entity>(racers.size());
+		
+		while(!racers.isEmpty()) {
+			int best = 0;
+			for(int i = 1; i < racers.size(); ++i) {
+				if(Time.toMillis((String) racers.get(i).getProperty("time")) < 
+						Time.toMillis((String) racers.get(best).getProperty("time"))) {
+					best = i;
+				}
+			}
+			
+			// Remove the best racer from the original list, and place them in the sorted list
+			sortedRacers.add(racers.remove(best));
+		}
+		
+		return sortedRacers;
+	}
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

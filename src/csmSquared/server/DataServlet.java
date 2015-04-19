@@ -18,49 +18,45 @@ public class DataServlet extends HttpServlet {
 	public void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
 		resp.setContentType("text/html");
 		
+		HTMLBuilder builder = new HTMLBuilder();
+		
 		try {
 			int runNumber = Integer.parseInt(req.getParameter("runInput"));
 			JSONObject runJSON = data.getRunData(runNumber);
 			
-			String html = 
-					"<!DOCTYPE html><html><head><meta charset=\"ISO-8859-1\">" +
-					"<title>Run " + runNumber + " Results</title>" +
-					"<link rel=\"stylesheet\" type=\"text/css\" href=\"style.css\">" +
-					"</head><body>";
+			
 			
 			if(runJSON != null) {
-				html += "<header>" + 
-						"<h1>Run " + runNumber + "</h1>" +
-						"<h2>results</h2>" + 
-						"</header><br/>" +
-						"<div class=\"main_container\">" +
-						"<form action=\"data\" method=\"get\">" +
-						"<input type=\"text\" name=\"runInput\" placeholder=\"Enter a run number\" required> <input type=\"submit\" value=\"Go!\">" +
-						"</form></div><br/>" +
-						"<table>" +
-						"<tr>" +
-						"<th>Racer ID</th>" +
-						"<th>Time</th>" +
-						"</tr>";
+				builder.addHeader("Run " + runNumber, "Results")
+					.addBreak()
+					.startDiv("main_container")
+					.addInput("data", "get", "runInput", "Enter a run number", "Go!")
+					.endDiv()
+					.addBreak()
+					.startTable("Racer", "Time");
 				
 				JSONArray racerArray = runJSON.getJSONArray("racers");
 				for(int i = 0; i < racerArray.length(); ++i) {
 					JSONObject racer = racerArray.getJSONObject(i);
-					html += "<tr>" + 
-							"<td>" + racer.getString("id") + "</td>" + 
-							"<td>" + racer.getString("time") + "</td>" +
-							"</tr>"; 
+					builder.addTableRow(racer.getString("id"), racer.getString("time")); 
 				}
+				
+				builder.endTable();
 			}
 			else {
-				html += "<p>Sorry! We found no data for run " + runNumber + "</p>";
+				builder = new HTMLBuilder("No Data Found");
+				builder.addHeader("Sorry!")
+					   .addP("There was no data associated with the run you requested.");
 			}
-			
-			html += "</table></body></hmtl>";
-			
-			resp.getWriter().print(html);
 		} catch (Exception e) {
-			resp.getWriter().print("<h1>UH OH</h1>");
+			builder = new HTMLBuilder("An Error Occured");
+			builder.addHeader("Uh Oh!", "Something went wrong")
+				   .addP("Well, this is embarassing. An error occurred while processing your request.")
+				   .addBreak()
+				   .addP(e.getClass()+ ": " + e.getMessage());
+		} finally {
+			String html = builder.build();
+			resp.getWriter().print(html);
 		}
 	}
 	
