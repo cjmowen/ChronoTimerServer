@@ -19,14 +19,14 @@ public class DataServlet extends HttpServlet {
 		resp.setContentType("text/html");
 		
 		HTMLBuilder builder = new HTMLBuilder();
+		String input = req.getParameter("runInput");
 		
 		try {
-			int runNumber = Integer.parseInt(req.getParameter("runInput"));
+			int runNumber = Integer.parseInt(input);
 			JSONObject runJSON = data.getRunData(runNumber);
 			
-			
-			
 			if(runJSON != null) {
+				// If there is run data found, display it
 				builder.addHeader("Run " + runNumber, "Results")
 					.addBreak()
 					.startDiv("main_container")
@@ -44,16 +44,34 @@ public class DataServlet extends HttpServlet {
 				builder.endTable();
 			}
 			else {
-				builder = new HTMLBuilder("No Data Found");
-				builder.addHeader("Sorry!")
-					   .addP("There was no data associated with the run you requested.");
+				// If there was no data found for the run, ask the user to try a different number
+				builder = new HTMLBuilder("No data found");
+				builder.addHeader("ChronoTimer 1009")
+					   .addBreak()
+					   .startDiv("main_container")
+					   .addP("We don't see a run " + runNumber + " anywhere. Try a different one!")
+					   .addInput("data", "get", "runInput", "Enter a run number", "Go!")
+					   .endDiv();
 			}
-		} catch (Exception e) {
+//		} catch(NumberFormatException e) {
+//			// If the user enters something that isn't an integer...
+//			builder = new HTMLBuilder("Invalid run number");
+//			builder.addHeader("ChronoTimer 1009")
+//				   .addBreak()
+//				   .startDiv("main_container")
+//				   .addP("Sorry, \"" + input + "\" is not a valid run number. Try again!")
+//				   .addInput("data", "get", "runInput", "Enter a run number", "Go!")
+//				   .endDiv();
+		}catch (Exception e) {
+			// Something else went wrong (hopefully not)
 			builder = new HTMLBuilder("An Error Occured");
 			builder.addHeader("Uh Oh!", "Something went wrong")
-				   .addP("Well, this is embarassing. An error occurred while processing your request.")
 				   .addBreak()
-				   .addP(e.getClass()+ ": " + e.getMessage());
+				   .startDiv("main_container")
+				   .addP("Well, this is embarassing! An error occurred while processing your request.")
+				   .addP(e.getClass()+ ": " + e.getMessage())
+				   .addInput("data", "get", "runInput", "Enter a run number", "Go!")
+				   .endDiv();
 		} finally {
 			String html = builder.build();
 			resp.getWriter().print(html);

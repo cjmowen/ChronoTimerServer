@@ -31,7 +31,7 @@ public class HTMLBuilder {
 	public HTMLBuilder addInput(String formAction, String formMethod,
 			String inputName, String inputPlaceholder, String buttonValue) {
 		body.append("<form action='" + formAction + "' method='" + formMethod + "'>")
-			.append("<input type='text' name='" + inputName + "' placeholder='" + inputPlaceholder + "' required>")
+			.append("<input type='text' name='" + inputName + "' placeholder='" + inputPlaceholder + "' required> ")
 			.append("<input type='submit' value='" + buttonValue + "'>")
 			.append("</form>");
 		return this;
